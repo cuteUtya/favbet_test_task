@@ -6,6 +6,7 @@ import 'package:favbet_test_task/features/theme/presentation/controllers/theme_c
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -16,6 +17,7 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePage extends ConsumerState<HomePage> {
   int page = 1;
+  bool inited = false;
   final ScrollController scrollController = ScrollController();
 
   void _scrollToEnd() {
@@ -44,7 +46,11 @@ class _HomePage extends ConsumerState<HomePage> {
       if (previous?.isLoading == true &&
           next.isLoading == false &&
           next.pages[page] != null) {
-        _scrollToEnd();
+        if (!inited) {
+          inited = true;
+        } else {
+          _scrollToEnd();
+        }
       }
     });
 
@@ -64,7 +70,7 @@ class _HomePage extends ConsumerState<HomePage> {
         actions: [
           IconButton(
             onPressed: () {
-              //TODO
+              context.push('/location');
             },
             icon: Icon(Icons.search, color: theme.theme.text),
           ),
@@ -124,9 +130,8 @@ class _HomePage extends ConsumerState<HomePage> {
                                 key: Key(
                                   'movie-${item.id}-${favoriteController.isFavorite(item.id.toString())}',
                                 ),
-                                image: NetworkImage(
-                                  'https://image.tmdb.org/t/p/w500/${item.posterPath}',
-                                ),
+                                id: item.id.toString(),
+                                imagePath: item.posterPath,
                                 isFavorite: favoriteController.isFavorite(
                                   item.id.toString(),
                                 ),

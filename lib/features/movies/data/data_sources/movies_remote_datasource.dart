@@ -28,7 +28,10 @@ class MoviesRemoteDatasourceImpl extends MoviesRemoteDatasource {
     required String q,
     required int page,
   }) async {
-    final res = await dio.get('$movieApiHost/search/movie?query=$q&page=$page');
+    final res = await dio.get(
+      '$movieApiHost/search/movie',
+      queryParameters: {'query': q, 'page': page},
+    );
 
     return MovieSearchResponseModel.fromJson(res.data);
   }

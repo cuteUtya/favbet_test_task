@@ -11,16 +11,20 @@ class MoviesDetailsNotifier extends StateNotifier<MoviesDetailsState> {
     : super(MoviesDetailsState());
 
   Future<void> openMovie(String id) async {
-    state = state.copyWith(loading: true, error: null);
+    state = state.copyWith(state.details, loading: true, error: null);
 
     try {
       var details = await fetchMovieDetailsUseCase(id);
-      state = state.copyWith(details: details);
+      state = state.copyWith(details);
     } catch (_) {
-      state = state.copyWith(error: 'Error while loading movie');
+      state = state.copyWith(state.details, error: 'Error while loading movie');
     } finally {
-      state = state.copyWith(loading: false);
+      state = state.copyWith(state.details, loading: false);
     }
+  }
+
+  void close() {
+    state = state.copyWith(null, loading: false);
   }
 }
 
@@ -45,13 +49,13 @@ class MoviesDetailsState {
 
   MoviesDetailsState({this.details, this.loading = false, this.error});
 
-  MoviesDetailsState copyWith({
-    MovieDetailsEntity? details,
+  MoviesDetailsState copyWith(
+    MovieDetailsEntity? details, {
     bool? loading,
     String? error,
   }) => MoviesDetailsState(
-    details: details ?? this.details,
+    details: details,
     loading: loading ?? this.loading,
-    error: error,
+    error: error ?? this.error,
   );
 }

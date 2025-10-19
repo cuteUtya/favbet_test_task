@@ -5,8 +5,8 @@ class SearchMoviesUseCase {
   final MoviesRepository repo;
   SearchMoviesUseCase(this.repo);
 
-  Future<MovieSearchResponceEntity> call(String q, {int page = 0}) {
-    if (page < 0) throw Exception('Invalid page');
+  Future<MovieSearchResponceEntity> call(String q, {int page = 1}) {
+    if (page < 1) throw Exception('Invalid page');
     return repo.search(q, page: page);
   }
 }

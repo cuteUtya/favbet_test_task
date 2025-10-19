@@ -33,7 +33,7 @@ class PaginationBar extends ConsumerWidget {
       children: [
         btn(1),
 
-        if (currentPage > 4) dots(),
+        if (currentPage > 3) dots(),
 
         ...List.generate(3, (index) {
           int page = currentPage - 1 + index;
