@@ -1,6 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-String get movieKey {
+String get movieAPIKey {
   var key = dotenv.env['MOVIE_API_KEY'];
 
   if (key == null) {

@@ -1,4 +1,4 @@
-import 'package:favbet_test_task/features/movies/domain/entities/movie_summary_entity.dart';
+import 'package:favbet_test_task/features/movies/domain/entities/movies_response_entity.dart';
 import 'package:favbet_test_task/features/movies/domain/use_cases/fetch_top_rated.dart';
 import 'package:favbet_test_task/features/movies/presentation/controllers/movies_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +8,9 @@ class MoviesTopRatedNotifier extends StateNotifier<MovieTopRatedState> {
   final FetchTopRatedUseCase getMovies;
 
   MoviesTopRatedNotifier({required this.getMovies})
-    : super(MovieTopRatedState());
+    : super(MovieTopRatedState()) {
+    loadMovies();
+  }
 
   Future<void> loadMovies({bool loadMore = false}) async {
     if (state.isLoading || (!state.hasMore && loadMore)) return;
@@ -16,20 +18,24 @@ class MoviesTopRatedNotifier extends StateNotifier<MovieTopRatedState> {
     final nextPage = loadMore ? state.currentPage + 1 : 1;
 
     state = state.copyWith(isLoading: true, error: null);
-
     try {
       final moviesResponse = await getMovies(page: nextPage);
-
-      final moviesList = moviesResponse.results;
+      final moviePage = moviesResponse;
 
       state = state.copyWith(
-        movies: loadMore ? [...state.movies, ...moviesList] : moviesList,
+        pages: loadMore ? state.pages + [moviePage] : [moviePage],
         isLoading: false,
         currentPage: nextPage,
-        hasMore: moviesList.isNotEmpty,
+        hasMore: moviePage.results.isNotEmpty,
       );
     } catch (e) {
-      state = state.copyWith(isLoading: false, error: e.toString());
+      if (mounted) {
+        state = state.copyWith(isLoading: false, error: e.toString());
+      }
+    } finally {
+      if (mounted) {
+        state = state.copyWith(isLoading: false);
+      }
     }
   }
 }
@@ -46,14 +52,14 @@ final movieTopRatedProvider =
     });
 
 class MovieTopRatedState {
-  final List<MovieSummaryEntity> movies;
+  final List<MoviesResponseEntity> pages;
   final bool isLoading;
   final String? error;
   final int currentPage;
   final bool hasMore;
 
   MovieTopRatedState({
-    this.movies = const [],
+    this.pages = const [],
     this.isLoading = false,
     this.error,
     this.currentPage = 1,
@@ -61,14 +67,14 @@ class MovieTopRatedState {
   });
 
   MovieTopRatedState copyWith({
-    List<MovieSummaryEntity>? movies,
+    List<MoviesResponseEntity>? pages,
     bool? isLoading,
     String? error,
     int? currentPage,
     bool? hasMore,
   }) {
     return MovieTopRatedState(
-      movies: movies ?? this.movies,
+      pages: pages ?? this.pages,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
       currentPage: currentPage ?? this.currentPage,

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:dio/dio.dart';
 
 import 'package:favbet_test_task/env.dart';
@@ -12,22 +11,25 @@ class MoviesRemoteDatasourceImpl extends MoviesRemoteDatasource {
 
   MoviesRemoteDatasourceImpl(this.dio);
 
+  @override
   Future<MoviesResponseModel> fetchTopRated({required int page}) async {
-    final res = await dio.get('$movieApiHost/movie/top_rated&page=$page');
-    return MoviesResponseModel.fromJson(jsonDecode(res.data));
+    final res = await dio.get('$movieApiHost/movie/top_rated?page=$page');
+    return MoviesResponseModel.fromJson(res.data);
   }
 
+  @override
   Future<MovieDetailsModel> fetchMovieDetails(String id) async {
     final res = await dio.get('$movieApiHost/movie/$id');
-    return MovieDetailsModel.fromJson(jsonDecode(res.data));
+    return MovieDetailsModel.fromJson(res.data);
   }
 
+  @override
   Future<MovieSearchResponseModel> search({
     required String q,
     required int page,
   }) async {
     final res = await dio.get('$movieApiHost/search/movie?query=$q&page=$page');
 
-    return MovieSearchResponseModel.fromJson(jsonDecode(res.data));
+    return MovieSearchResponseModel.fromJson(res.data);
   }
 }
