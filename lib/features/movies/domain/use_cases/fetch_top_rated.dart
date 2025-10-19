@@ -1,9 +1,9 @@
 import 'package:favbet_test_task/features/movies/domain/entities/movies_response_entity.dart';
 import 'package:favbet_test_task/features/movies/domain/repositories/movies_repository.dart';
 
-class FetchTopRated {
+class FetchTopRatedUseCase {
   final MoviesRepository repo;
-  FetchTopRated(this.repo);
+  FetchTopRatedUseCase(this.repo);
 
   Future<MoviesResponseEntity> call({int page = 1}) {
     if (page < 0) throw Exception('Invalid page');

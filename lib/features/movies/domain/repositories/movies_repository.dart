@@ -8,4 +8,5 @@ abstract class MoviesRepository {
   Future<MovieSearchResponceEntity> search(String q, {int page = 1});
   Future<bool> isFavorite(String movieId);
   Future<void> toggleFavorite(String movieId);
+  Future<List<String>> getFavoriteIds();
 }

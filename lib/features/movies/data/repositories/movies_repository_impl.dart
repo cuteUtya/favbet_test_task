@@ -1,5 +1,5 @@
-import 'package:favbet_test_task/features/movies/data/data_sources/movies_local_datasource.dart';
-import 'package:favbet_test_task/features/movies/data/data_sources/movies_remote_datasource.dart';
+import 'package:favbet_test_task/features/movies/domain/data_sources/movies_local_datasource.dart';
+import 'package:favbet_test_task/features/movies/domain/data_sources/movies_remote_datasource.dart';
 import 'package:favbet_test_task/features/movies/domain/entities/movie_details_entity.dart';
 import 'package:favbet_test_task/features/movies/domain/entities/movie_search_responce_entity.dart';
 import 'package:favbet_test_task/features/movies/domain/entities/movies_response_entity.dart';
@@ -7,7 +7,7 @@ import 'package:favbet_test_task/features/movies/domain/repositories/movies_repo
 
 class MoviesRepositoryImpl implements MoviesRepository {
   final MoviesRemoteDatasource remote;
-  final MovieLocalDataSource local;
+  final MoviesLocalDatasource local;
 
   MoviesRepositoryImpl(this.remote, this.local);
 
@@ -37,5 +37,10 @@ class MoviesRepositoryImpl implements MoviesRepository {
   @override
   Future<void> toggleFavorite(String movieId) async {
     local.toggleFavorite(movieId);
+  }
+
+  @override
+  Future<List<String>> getFavoriteIds() {
+    return local.getFavoriteIds();
   }
 }
