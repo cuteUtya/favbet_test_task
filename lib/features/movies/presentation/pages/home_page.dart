@@ -70,7 +70,7 @@ class _HomePage extends ConsumerState<HomePage> {
         actions: [
           IconButton(
             onPressed: () {
-              context.push('/location');
+              context.push('/search');
             },
             icon: Icon(Icons.search, color: theme.theme.text),
           ),
@@ -87,7 +87,7 @@ class _HomePage extends ConsumerState<HomePage> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsetsGeometry.only(left: 16.5, right: 16.5, bottom: 24),
+          padding: EdgeInsets.only(left: 16.5, right: 16.5, bottom: 24),
           child: Column(
             children: [
               topRated.isLoading

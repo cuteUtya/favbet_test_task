@@ -36,7 +36,7 @@ final GoRouter _router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/location',
+      path: '/search',
       builder: (BuildContext context, GoRouterState state) {
         return SearchPage();
       },

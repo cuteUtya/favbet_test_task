@@ -65,11 +65,7 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
         body: movieDetails.loading || movieDetails.details == null
             ? Center(child: CircularProgressIndicator())
             : Padding(
-                padding: EdgeInsetsGeometry.only(
-                  left: 16,
-                  right: 16,
-                  bottom: 16,
-                ),
+                padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
                 child: SafeArea(
                   child: ListView(
                     children: [

@@ -61,7 +61,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
           ),
         ),
         body: Padding(
-          padding: EdgeInsetsGeometry.only(left: 16, right: 16, top: 16),
+          padding: EdgeInsets.only(left: 16, right: 16, top: 16),
           child: SafeArea(
             child: NotificationListener<ScrollNotification>(
               onNotification: (ScrollNotification scrollInfo) {
@@ -100,7 +100,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                   if (!searchResults.loading &&
                       editingController.text.isNotEmpty)
                     Padding(
-                      padding: EdgeInsetsGeometry.only(bottom: 24),
+                      padding: EdgeInsets.only(bottom: 24),
                       child: Text(
                         'Search results (${searchResults.totalResults})',
                         style: TextStyle(
