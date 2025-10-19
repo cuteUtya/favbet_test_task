@@ -36,7 +36,7 @@ class MoviesRepositoryImpl implements MoviesRepository {
 
   @override
   Future<void> toggleFavorite(String movieId) async {
-    local.toggleFavorite(movieId);
+    await local.toggleFavorite(movieId);
   }
 
   @override

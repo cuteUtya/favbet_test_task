@@ -8,26 +8,24 @@ class MoviesTopRatedNotifier extends StateNotifier<MovieTopRatedState> {
   final FetchTopRatedUseCase getMovies;
 
   MoviesTopRatedNotifier({required this.getMovies})
-    : super(MovieTopRatedState()) {
-    loadMovies();
-  }
+    : super(MovieTopRatedState());
 
-  Future<void> loadMovies({bool loadMore = false}) async {
-    if (state.isLoading || (!state.hasMore && loadMore)) return;
-
-    final nextPage = loadMore ? state.currentPage + 1 : 1;
-
+  Future<void> loadMovies({required int page}) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final moviesResponse = await getMovies(page: nextPage);
-      final moviePage = moviesResponse;
+      final moviesResponse = await getMovies(page: page);
+      final newPages = <int, MoviesResponseEntity>{};
 
-      state = state.copyWith(
-        pages: loadMore ? state.pages + [moviePage] : [moviePage],
-        isLoading: false,
-        currentPage: nextPage,
-        hasMore: moviePage.results.isNotEmpty,
-      );
+      newPages.addAll(state.pages);
+      newPages[page] = moviesResponse;
+
+      if (mounted) {
+        state = state.copyWith(
+          pages: newPages,
+          isLoading: false,
+          totalPages: moviesResponse.totalPages,
+        );
+      }
     } catch (e) {
       if (mounted) {
         state = state.copyWith(isLoading: false, error: e.toString());
@@ -52,33 +50,29 @@ final movieTopRatedProvider =
     });
 
 class MovieTopRatedState {
-  final List<MoviesResponseEntity> pages;
+  final Map<int, MoviesResponseEntity> pages;
   final bool isLoading;
   final String? error;
-  final int currentPage;
-  final bool hasMore;
+  final int totalPages;
 
   MovieTopRatedState({
-    this.pages = const [],
+    this.pages = const {},
     this.isLoading = false,
     this.error,
-    this.currentPage = 1,
-    this.hasMore = true,
+    this.totalPages = 1,
   });
 
   MovieTopRatedState copyWith({
-    List<MoviesResponseEntity>? pages,
+    Map<int, MoviesResponseEntity>? pages,
     bool? isLoading,
     String? error,
-    int? currentPage,
-    bool? hasMore,
+    int? totalPages,
   }) {
     return MovieTopRatedState(
       pages: pages ?? this.pages,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
-      currentPage: currentPage ?? this.currentPage,
-      hasMore: hasMore ?? this.hasMore,
+      totalPages: totalPages ?? this.totalPages,
     );
   }
 }

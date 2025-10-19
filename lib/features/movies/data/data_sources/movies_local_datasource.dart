@@ -16,14 +16,12 @@ class MoviesLocalDataSourceImpl implements MoviesLocalDatasource {
 
   @override
   Future<void> toggleFavorite(String movieId) async {
-    bool oldValue = await isFavorite(movieId);
+    var oldList = await getFavoriteIds();
+    var oldValue = oldList.contains(movieId);
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('movie-$movieId', !oldValue);
 
-    var oldList = await getFavoriteIds();
-
-    //remove is it was liked before
     if (oldValue) {
       oldList.remove(movieId);
     } else {
