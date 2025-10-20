@@ -98,7 +98,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                   ),
                   SizedBox(height: 16),
                   if (!searchResults.loading &&
-                      editingController.text.isNotEmpty)
+                      editingController.text.length > 3)
                     Padding(
                       padding: EdgeInsets.only(bottom: 24),
                       child: Text(
@@ -112,7 +112,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                     ),
 
                   if (!searchResults.loading &&
-                      editingController.text.isNotEmpty &&
+                      editingController.text.length > 3 &&
                       searchResults.totalResults == 0)
                     Icon(Icons.not_interested, size: 100),
                   GridView.builder(

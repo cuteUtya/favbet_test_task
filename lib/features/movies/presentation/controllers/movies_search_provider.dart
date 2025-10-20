@@ -16,7 +16,7 @@ class MovieSearchNotifier extends StateNotifier<MoviesSearchState> {
   Future<void> search(String q) async {
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 250), () async {
-      if (q.isEmpty) {
+      if (q.length <= 3) {
         state = state.copyWith(
           loading: false,
           results: [],
