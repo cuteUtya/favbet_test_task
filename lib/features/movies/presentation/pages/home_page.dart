@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:favbet_test_task/features/movies/presentation/controllers/favorite_movies_provider.dart';
 import 'package:favbet_test_task/features/movies/presentation/controllers/movies_top_rated_provider.dart';
 import 'package:favbet_test_task/features/movies/presentation/widgets/movie_card.dart';
@@ -148,7 +150,9 @@ class _HomePage extends ConsumerState<HomePage> {
                             children: [
                               PaginationBar(
                                 currentPage: page,
-                                totalPages: topRated.totalPages,
+                                //NOTE: for whatever reason API itself does not
+                                //allow call for pages above 500
+                                totalPages: min(topRated.totalPages, 500),
                                 onTap: (i) {
                                   setState(() => page = i);
                                 },
