@@ -78,7 +78,10 @@ class _MovieDetailsPageState extends ConsumerState<MovieDetailsPage> {
                               borderRadius: BorderRadiusGeometry.circular(12),
                               child: Image(
                                 image: NetworkImage(
-                                  'https://image.tmdb.org/t/p/w500/${movieDetails.details!.posterPath}',
+                                  (movieDetails.details?.posterPath ?? '')
+                                          .isEmpty
+                                      ? 'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg'
+                                      : 'https://image.tmdb.org/t/p/w500/${movieDetails.details!.posterPath}',
                                 ),
                               ),
                             ),
