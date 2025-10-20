@@ -32,6 +32,7 @@ class MovieSearchNotifier extends StateNotifier<MoviesSearchState> {
         state = state.copyWith(
           results: results.results,
           totalResults: results.totalResults,
+          hasMore: results.results.isNotEmpty,
         );
       } catch (_) {
         state = state.copyWith(error: 'Issue while searching movies');
